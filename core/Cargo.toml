@@ -1,0 +1,81 @@
+[package]
+name = "ruffle_core"
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+version.workspace = true
+
+[dependencies]
+linkme = { version = "0.3", optional = true }
+byteorder = "1.4"
+bitstream-io = "1.7.0"
+flate2 = "1.0.27"
+fnv = "1.0.7"
+gc-arena = { package = "ruffle_gc_arena", path = "../ruffle_gc_arena" }
+generational-arena = "0.2.9"
+indexmap = "2.0.0"
+tracing = { workspace = true }
+ruffle_render = { path = "../render", features = ["tessellator"] }
+ruffle_video = { path = "../video" }
+ruffle_macros = { path = "macros" }
+ruffle_wstr = { path = "../wstr" }
+swf = { path = "../swf" }
+bitflags = "2.4.0"
+smallvec = { version = "1.11.0", features = ["union"] }
+num-traits = "0.2"
+num-derive = "0.4"
+quick-xml = "0.30.0"
+downcast-rs = "1.2.0"
+url = "2.4.1"
+weak-table = "0.3.2"
+percent-encoding = "2.3.0"
+thiserror = "1.0"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+instant = "0.1"
+encoding_rs = "0.8.33"
+rand = { version = "0.8.5", features = ["std", "small_rng"], default-features = false }
+serde = { version = "1.0.188", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+nellymoser-rs = { git = "https://github.com/ruffle-rs/nellymoser", rev = "4a33521c29a918950df8ae9fe07e527ac65553f5", optional = true }
+regress = "0.7"
+flash-lso = { git = "https://github.com/ruffle-rs/rust-flash-lso", rev = "3669a352c14192d0d301e594ae6047ae99725006" }
+lzma-rs = {version = "0.3.0", optional = true }
+dasp = { git = "https://github.com/RustAudio/dasp", rev = "f05a703", features = ["interpolate", "interpolate-linear", "signal"], optional = true }
+symphonia = { version = "0.5.3", default-features = false, features = ["mp3"], optional = true }
+enumset = "1.1.2"
+bytemuck = "1.14.0"
+clap = { version = "4.4.3", features = ["derive"], optional=true }
+realfft = "3.3.0"
+hashbrown = { version = "0.14.0", features = ["raw"] }
+scopeguard = "1.2.0"
+fluent-templates = "0.8.0"
+egui = { workspace = true, optional = true }
+egui_extras = { git = "https://github.com/emilk/egui", rev = "98087029e020a1b2d78a4eb840d0a8505340ecad", optional = true }
+png = { version = "0.17.10", optional = true }
+flv-rs = { path = "../flv" }
+async-channel = "1.9.0"
+
+[target.'cfg(not(target_family = "wasm"))'.dependencies.futures]
+version = "0.3.28"
+
+[target.'cfg(target_family = "wasm")'.dependencies.wasm-bindgen-futures]
+version = "0.4.37"
+
+[features]
+default = []
+lzma = ["lzma-rs", "swf/lzma"]
+wasm-bindgen = ["instant/wasm-bindgen"]
+avm_debug = []
+deterministic = []
+timeline_debug = []
+mp3 = ["symphonia"]
+nellymoser = ["nellymoser-rs"]
+audio = ["dasp"]
+known_stubs = ["linkme"]
+default_compatibility_rules = []
+egui = ["dep:egui", "dep:egui_extras", "png"]
+
+[build-dependencies]
+build_playerglobal = { path = "build_playerglobal" }
